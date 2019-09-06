@@ -1,0 +1,45 @@
+           <?php
+		    $mail=$_GET['id'];
+		     $servername = "localhost";
+      $username = "jishnutheindian";
+      $password = "jishnu9345";
+      $dbname = "dataentry";
+	  $conn = new mysqli($servername, $username, $password, $dbname);
+	  if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+        }
+
+             
+			 
+$file = "SELECT * FROM timeline WHERE usermail ='$mail' ORDER BY num DESC";
+$userimage="";
+
+$result= $conn->query($file);
+if (mysqli_num_rows($result) > 0) {
+
+ while($r = $result->fetch_assoc()) {
+$mail=$r["usermail"];
+$f= "SELECT imagename FROM images WHERE userEmail='$mail' AND spec='propic' ";
+$r1= $conn->query($f);
+if (mysqli_num_rows($r1) > 0) {
+ while($row = $r1->fetch_assoc()) {
+        $userimage=$row["imagename"];
+     }
+}
+	 echo' <div class="panel panel-default"><div class="article"><h5><span>';
+	
+	 echo'<img src="images/'.$userimage.'" class="img-circle"  width="50" height="50">  ';
+		 echo $r["usermail"].'</span></h5><h6>  posted an update</h6>';
+        echo '<div class="clr"></div>';
+		echo '<p class="post-data"><span class="date">'.$r["time"].'</span></p>';
+		 if( $r["imagesrc"]!="")
+	 {
+		echo '<img src="images/'.$r["imagesrc"].'" width="auto" height="193" alt="" />';
+	 }
+        echo '<br><br><p><h4>'.$r["post"].'</h4></p><div class="clr"></div>
+          </div></div>';
+     }
+}
+
+
+		  ?>
